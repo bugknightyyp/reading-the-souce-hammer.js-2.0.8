@@ -1,4 +1,7 @@
-# Hammer.js 2.0.6
+# Hammer.js 2.0.8
+代码复制源库
+
+以注释的方式阅读hammer.js源码
 
 [![Build Status](https://travis-ci.org/hammerjs/hammer.js.svg)](https://travis-ci.org/hammerjs/hammer.js)
 
@@ -26,7 +29,7 @@ mc.add(Rotate);
 // subscribe to events
 mc.on('rotate', function(e) {
     // do something cool
-    var rotation = Math.round(e.rotation);    
+    var rotation = Math.round(e.rotation);
     stage.style.transform = 'rotate('+rotation+'deg)';
 });
 ```
@@ -47,5 +50,5 @@ For PRs.
 
 ## Building
 
-You can get the pre-build versions from the Hammer.js website, or do this by yourself running 
+You can get the pre-build versions from the Hammer.js website, or do this by yourself running
 `npm install -g grunt-cli && npm install && grunt build`
