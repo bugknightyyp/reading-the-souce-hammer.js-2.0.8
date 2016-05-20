@@ -22,7 +22,10 @@ function Manager(element, options) {
     this.touchAction = new TouchAction(this, this.options.touchAction);
 
     toggleCssProps(this, true);
-
+    /** recognizers: [
+            [RecognizerClass, [options], [recognizeWith, ...], [requireFailure, ...]
+        ]
+    */
     each(this.options.recognizers, function(item) {
         var recognizer = this.add(new (item[0])(item[1]));
         item[2] && recognizer.recognizeWith(item[2]);
