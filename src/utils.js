@@ -187,7 +187,7 @@ function bindFn(fn, context) {
  * @returns {Boolean}
  */
 function boolOrFn(val, args) {
-    if (typeof val == TYPE_FUNCTION) {
+    if (typeof val == TYPE_FUNCTION) {//var TYPE_FUNCTION = 'function';
         return val.apply(args ? args[0] || undefined : undefined, args);
     }
     return val;
