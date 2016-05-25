@@ -29,6 +29,7 @@ var DIRECTION_ALL = DIRECTION_HORIZONTAL | DIRECTION_VERTICAL;
 var PROPS_XY = ['x', 'y'];
 var PROPS_CLIENT_XY = ['clientX', 'clientY'];
 
+
 /**
  * create new input type manager
  * @param {Manager} manager
@@ -45,7 +46,7 @@ function Input(manager, callback) {
 
     // smaller wrapper around the handler, for the scope and the enabled state of the manager,
     // so when disabled the input events are completely bypassed.
-    this.domHandler = function(ev) {
+    this.domHandler = function(ev) {//给事件绑定的 处理函数
         if (boolOrFn(manager.options.enable, [manager])) {
             self.handler(ev);
         }
@@ -119,7 +120,7 @@ function inputHandler(manager, eventType, input) {
 
     input.isFirst = !!isFirst;
     input.isFinal = !!isFinal;
-
+    //给manager创建一个新会话
     if (isFirst) {
         manager.session = {};
     }
@@ -133,9 +134,9 @@ function inputHandler(manager, eventType, input) {
 
     // emit secret event
     manager.emit('hammer.input', input);
-
+    //开始识别手势
     manager.recognize(input);
-    manager.session.prevInput = input;
+    manager.session.prevInput = input;// 缓存上一次的inputData
 }
 
 /**

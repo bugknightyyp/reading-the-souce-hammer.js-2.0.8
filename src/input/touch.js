@@ -59,7 +59,7 @@ function getTouches(ev, type) {
         target = this.target;
 
     // get target touches from touches
-    targetTouches = allTouches.filter(function(touch) {
+    targetTouches = allTouches.filter(function(touch) {// 过滤掉不是目标元素上的pointer
         return hasParent(touch.target, target);
     });
 

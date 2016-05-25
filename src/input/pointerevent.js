@@ -48,7 +48,7 @@ inherit(PointerEventInput, Input, {
 
         var eventTypeNormalized = ev.type.toLowerCase().replace('ms', '');
         var eventType = POINTER_INPUT_MAP[eventTypeNormalized];
-        var pointerType = IE10_POINTER_TYPE_ENUM[ev.pointerType] || ev.pointerType;
+        var pointerType = IE10_POINTER_TYPE_ENUM[ev.pointerType] || ev.pointerType;//指输入设备类型
 
         var isTouch = (pointerType == INPUT_TYPE_TOUCH);
 
@@ -56,7 +56,7 @@ inherit(PointerEventInput, Input, {
         var storeIndex = inArray(store, ev.pointerId, 'pointerId');
 
         // start and mouse must be down
-        if (eventType & INPUT_START && (ev.button === 0 || isTouch)) {
+        if (eventType & INPUT_START && (ev.button === 0 || isTouch)) {//如果是输入开始，且没有缓存该pointer触发的事件，则缓存
             if (storeIndex < 0) {
                 store.push(ev);
                 storeIndex = store.length - 1;
