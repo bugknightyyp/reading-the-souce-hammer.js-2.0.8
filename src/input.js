@@ -285,7 +285,7 @@ function simpleCloneInputData(input) {
  * @param {Array} pointers
  * @return {Object} center contains `x` and `y` properties
  */
-function getCenter(pointers) {
+function getCenter(pointers) {// 取所有点坐标的中位数
     var pointersLength = pointers.length;
 
     // no need to loop when only one touch
