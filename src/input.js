@@ -136,7 +136,7 @@ function inputHandler(manager, eventType, input) {
     manager.emit('hammer.input', input);
     //开始识别手势
     manager.recognize(input);
-    manager.session.prevInput = input;// 缓存上一次的inputData
+    manager.session.prevInput = input;// 缓存上一次的事件的inputData
 }
 
 /**
@@ -150,12 +150,12 @@ function computeInputData(manager, input) {
     var pointersLength = pointers.length;
 
     // store the first input to calculate the distance and direction
-    if (!session.firstInput) {
+    if (!session.firstInput) {// 保存当前回话期的第一次输入事件信息
         session.firstInput = simpleCloneInputData(input);
     }
 
     // to compute scale and rotation we need to store the multiple touches
-    if (pointersLength > 1 && !session.firstMultiple) {
+    if (pointersLength > 1 && !session.firstMultiple) {//如果当前回话期出现多点，则保存这次输入事件信息
         session.firstMultiple = simpleCloneInputData(input);
     } else if (pointersLength === 1) {
         session.firstMultiple = false;
@@ -167,7 +167,7 @@ function computeInputData(manager, input) {
 
     var center = input.center = getCenter(pointers);
     input.timeStamp = now();
-    input.deltaTime = input.timeStamp - firstInput.timeStamp;
+    input.deltaTime = input.timeStamp - firstInput.timeStamp;//与当前会话触发第一次输入事件时的时间差
 
     input.angle = getAngle(offsetCenter, center);
     input.distance = getDistance(offsetCenter, center);
@@ -364,7 +364,7 @@ function getDistance(p1, p2, props) {
  * @param {Array} [props] containing x and y keys
  * @return {Number} angle
  */
-function getAngle(p1, p2, props) {
+function getAngle(p1, p2, props) {//利用反正切函数求角度
     if (!props) {
         props = PROPS_XY;
     }
