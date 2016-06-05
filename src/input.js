@@ -164,7 +164,7 @@ function computeInputData(manager, input) {
     var firstInput = session.firstInput;
     var firstMultiple = session.firstMultiple;
     var offsetCenter = firstMultiple ? firstMultiple.center : firstInput.center;
-
+    // 所有的deltaXxx的属性表示的是当前回话该次输入事件与第一次输入事件（不是上一次输入事件）的对应状态的偏移量
     var center = input.center = getCenter(pointers);
     input.timeStamp = now();
     input.deltaTime = input.timeStamp - firstInput.timeStamp;//与当前会话触发第一次输入事件时的时间差
@@ -178,7 +178,7 @@ function computeInputData(manager, input) {
     var overallVelocity = getVelocity(input.deltaTime, input.deltaX, input.deltaY);
     input.overallVelocityX = overallVelocity.x;
     input.overallVelocityY = overallVelocity.y;
-    input.overallVelocity = (abs(overallVelocity.x) > abs(overallVelocity.y)) ? overallVelocity.x : overallVelocity.y;
+    input.overallVelocity = (abs(overallVelocity.x) > abs(overallVelocity.y)) ? overallVelocity.x : overallVelocity.y;// 去速度最大的值
 
     input.scale = firstMultiple ? getScale(firstMultiple.pointers, pointers) : 1;
     input.rotation = firstMultiple ? getRotation(firstMultiple.pointers, pointers) : 0;
@@ -198,8 +198,8 @@ function computeInputData(manager, input) {
 
 function computeDeltaXY(session, input) {
     var center = input.center;
-    var offset = session.offsetDelta || {};
-    var prevDelta = session.prevDelta || {};
+    var offset = session.offsetDelta || {};//位移
+    var prevDelta = session.prevDelta || {};//偏移量
     var prevInput = session.prevInput || {};
 
     if (input.eventType === INPUT_START || prevInput.eventType === INPUT_END) {
@@ -316,7 +316,7 @@ function getCenter(pointers) {// 取所有点坐标的中位数
  * @param {Number} y
  * @return {Object} velocity `x` and `y`
  */
-function getVelocity(deltaTime, x, y) {
+function getVelocity(deltaTime, x, y) {//获取移动速度
     return {
         x: x / deltaTime || 0,
         y: y / deltaTime || 0
@@ -329,7 +329,7 @@ function getVelocity(deltaTime, x, y) {
  * @param {Number} y
  * @return {Number} direction
  */
-function getDirection(x, y) {
+function getDirection(x, y) {//计算位移方向
     if (x === y) {
         return DIRECTION_NONE;
     }
@@ -347,7 +347,7 @@ function getDirection(x, y) {
  * @param {Array} [props] containing x and y keys
  * @return {Number} distance
  */
-function getDistance(p1, p2, props) {
+function getDistance(p1, p2, props) {//计算亮点之间的距离
     if (!props) {
         props = PROPS_XY;
     }
@@ -379,7 +379,7 @@ function getAngle(p1, p2, props) {//利用反正切函数求角度
  * @param {Array} end array of pointers
  * @return {Number} rotation
  */
-function getRotation(start, end) {
+function getRotation(start, end) {//他这里是两角度相加，我认为应该是相减　这提供一种使用向量来计算旋转角度的方法https://ivanvergiliev.github.io/simple-multi-touch-event-handling/
     return getAngle(end[1], end[0], PROPS_CLIENT_XY) + getAngle(start[1], start[0], PROPS_CLIENT_XY);
 }
 
@@ -390,6 +390,6 @@ function getRotation(start, end) {
  * @param {Array} end array of pointers
  * @return {Number} scale
  */
-function getScale(start, end) {
+function getScale(start, end) {//通过计算两点之间距离的比例来获得缩放比例
     return getDistance(end[0], end[1], PROPS_CLIENT_XY) / getDistance(start[0], start[1], PROPS_CLIENT_XY);
 }

@@ -51,7 +51,7 @@ function Recognizer(options) {
 
     this.state = STATE_POSSIBLE;
 
-    this.simultaneous = {};
+    this.simultaneous = {};// 缓存与该识别器同时发生的其他识别器
     this.requireFail = [];
 }
 
@@ -80,16 +80,16 @@ Recognizer.prototype = {
      * @param {Recognizer} otherRecognizer
      * @returns {Recognizer} this
      */
-    recognizeWith: function(otherRecognizer) {
+    recognizeWith: function(otherRecognizer) {//分别将自己和将要识别的识别器加入对方的simultaneous里
         if (invokeArrayArg(otherRecognizer, 'recognizeWith', this)) {
             return this;
         }
 
         var simultaneous = this.simultaneous;
         otherRecognizer = getRecognizerByNameIfManager(otherRecognizer, this);
-        if (!simultaneous[otherRecognizer.id]) {
+        if (!simultaneous[otherRecognizer.id]) {//如果没有标记与该识别器同时发生，则缓存
             simultaneous[otherRecognizer.id] = otherRecognizer;
-            otherRecognizer.recognizeWith(this);
+            otherRecognizer.recognizeWith(this);// 同时将当前识别器加入的自己的simultaneous里
         }
         return this;
     },
@@ -114,7 +114,7 @@ Recognizer.prototype = {
      * @param {Recognizer} otherRecognizer
      * @returns {Recognizer} this
      */
-    requireFailure: function(otherRecognizer) {
+    requireFailure: function(otherRecognizer) {//当其他的所有的识别器都识别失败时，在再执行自己
         if (invokeArrayArg(otherRecognizer, 'requireFailure', this)) {
             return this;
         }
@@ -159,7 +159,7 @@ Recognizer.prototype = {
      * @param {Recognizer} otherRecognizer
      * @returns {Boolean}
      */
-    canRecognizeWith: function(otherRecognizer) {
+    canRecognizeWith: function(otherRecognizer) {//表示该识别器是否能被同时识别
         return !!this.simultaneous[otherRecognizer.id];
     },
 
