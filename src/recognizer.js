@@ -114,7 +114,7 @@ Recognizer.prototype = {
      * @param {Recognizer} otherRecognizer
      * @returns {Recognizer} this
      */
-    requireFailure: function(otherRecognizer) {//当其他的所有的识别器都识别失败时，在再执行自己
+    requireFailure: function(otherRecognizer) {//当其他的所有的识别器全部识别失败时，在再执行自己
         if (invokeArrayArg(otherRecognizer, 'requireFailure', this)) {
             return this;
         }
@@ -211,7 +211,7 @@ Recognizer.prototype = {
      * can we emit?
      * @returns {boolean}
      */
-    canEmit: function() {
+    canEmit: function() {//判断requireFail中的recognizer是否全部识别失败
         var i = 0;
         while (i < this.requireFail.length) {
             if (!(this.requireFail[i].state & (STATE_FAILED | STATE_POSSIBLE))) {
@@ -232,7 +232,7 @@ Recognizer.prototype = {
         var inputDataClone = assign({}, inputData);
 
         // is is enabled and allow recognizing?
-        if (!boolOrFn(this.options.enable, [this, inputDataClone])) {
+        if (!boolOrFn(this.options.enable, [this, inputDataClone])) {// 如果不使用，则重置该状态，并且把状态设置为失败
             this.reset();
             this.state = STATE_FAILED;
             return;

@@ -30,10 +30,10 @@ inherit(TapRecognizer, Recognizer, {
         event: 'tap',
         pointers: 1,
         taps: 1,
-        interval: 300, // max time between the multi-tap taps
-        time: 250, // max time of the pointer to be down (like finger on the screen)
-        threshold: 9, // a minimal movement is ok, but keep it low
-        posThreshold: 10 // a multi-tap can be a bit off the initial position
+        interval: 300, // max time between the multi-tap taps //多次tap之间的最大时间差
+        time: 250, // max time of the pointer to be down (like finger on the screen)// 按在屏幕上的最长时间
+        threshold: 9, // a minimal movement is ok, but keep it low //两次tap位置的最大偏移距离
+        posThreshold: 10 // a multi-tap can be a bit off the initial position // 每次tap偏移初始位置的距离
     },
 
     getTouchAction: function() {
@@ -63,16 +63,16 @@ inherit(TapRecognizer, Recognizer, {
             var validInterval = this.pTime ? (input.timeStamp - this.pTime < options.interval) : true;
             var validMultiTap = !this.pCenter || getDistance(this.pCenter, input.center) < options.posThreshold;
 
-            this.pTime = input.timeStamp;
-            this.pCenter = input.center;
+            this.pTime = input.timeStamp;// 前一次事件的时间戳
+            this.pCenter = input.center; //前一次触发事件的位置中心
 
-            if (!validMultiTap || !validInterval) {
+            if (!validMultiTap || !validInterval) {//如果事件或者距离都无效，那么就把当前点作为起始点
                 this.count = 1;
             } else {
                 this.count += 1;
             }
 
-            this._input = input;
+            this._input = input;//保存上一次事件对象
 
             // if tap count matches we have recognized it,
             // else it has began recognizing...
@@ -91,7 +91,7 @@ inherit(TapRecognizer, Recognizer, {
                 }
             }
         }
-        return STATE_FAILED;
+        return STATE_FAILED;// 及时返回STATE_FAILED, 不使 this.recognize 方法执行 this.tryEmit
     },
 
     failTimeout: function() {

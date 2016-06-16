@@ -35,7 +35,7 @@ inherit(PanRecognizer, AttrRecognizer, {
         return actions;
     },
 
-    directionTest: function(input) {
+    directionTest: function(input) {//首先方向的匹配
         var options = this.options;
         var hasMoved = true;
         var distance = input.distance;
@@ -59,7 +59,7 @@ inherit(PanRecognizer, AttrRecognizer, {
         return hasMoved && distance > options.threshold && direction & options.direction;
     },
 
-    attrTest: function(input) {
+    attrTest: function(input) {// 验证输入是否满足该recognizer事件的条件
         return AttrRecognizer.prototype.attrTest.call(this, input) &&
             (this.state & STATE_BEGAN || (!(this.state & STATE_BEGAN) && this.directionTest(input)));
     },

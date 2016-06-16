@@ -26,7 +26,7 @@ inherit(AttrRecognizer, Recognizer, {
      * @param {Object} input
      * @returns {Boolean} recognized
      */
-    attrTest: function(input) {
+    attrTest: function(input) {// 验证pointer数量对不对
         var optionPointers = this.options.pointers;
         return optionPointers === 0 || input.pointers.length === optionPointers;
     },
@@ -37,7 +37,7 @@ inherit(AttrRecognizer, Recognizer, {
      * @param {Object} input
      * @returns {*} State
      */
-    process: function(input) {
+    process: function(input) {//根据inputState计算recognizeState
         var state = this.state;
         var eventType = input.eventType;
 

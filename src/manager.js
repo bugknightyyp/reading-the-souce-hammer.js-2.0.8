@@ -71,8 +71,13 @@ Manager.prototype = {
      * it walks through all the recognizers and tries to detect the gesture that is being made
      * @param {Object} inputData
      */
+     /*
+      在一次会话期中，每次事件只识别一个手势(pan, pinch, press, rotate, swipe, tag)，
+      如果事件触发后，再开始遍历识别之前，如果session.curRecognizer的状态是STATE_RECOGNIZED，则清空curRecognizer(session.curRecognizer = null)
+      
+     */
     recognize: function(inputData) {
-        var session = this.session;
+        var session = this.session;//在 inputHandler 如果是起始事件(eg: touchstart) 则会重置manager.session = {}
         if (session.stopped) {
             return;
         }
@@ -86,7 +91,7 @@ Manager.prototype = {
         // this holds the recognizer that is being recognized.
         // so the recognizer's state needs to be BEGAN, CHANGED, ENDED or RECOGNIZED
         // if no recognizer is detecting a thing, it is set to `null`
-        var curRecognizer = session.curRecognizer;
+        var curRecognizer = session.curRecognizer;// 保存正在识别的recognizer
 
         // reset when the last recognizer is recognized
         // or when we're in a new session
